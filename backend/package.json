@@ -1,0 +1,32 @@
+{
+  "name": "bookertus",
+  "version": "0.9.0",
+  "description": "Full stack project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EetuHakkinen/bookertus.git"
+  },
+  "author": "Eetu Häkkinen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EetuHakkinen/bookertus/issues"
+  },
+  "homepage": "https://github.com/EetuHakkinen/bookertus#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "http": "0.0.0",
+    "jest": "^24.7.1",
+    "mongoose": "^5.5.2"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
