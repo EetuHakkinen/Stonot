@@ -1,11 +1,15 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
+require('dotenv').config();
+let MONGODB_URL = '';
+if (process.env.NODE_ENV === 'test') {
+    MONGODB_URL = process.env.TEST_MONGODB_URL;
+} else {
+    MONGODB_URL= process.env.MONGODB_URL;
 }
 
 let PORT = process.env.PORT;
-let MONGODB_URI = process.env.MONGODB_URI;
+
 
 module.exports = {
     PORT,
-    MONGODB_URI
+    MONGODB_URL
 }
