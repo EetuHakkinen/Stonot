@@ -9,7 +9,7 @@ describe('creating user', () => {
     // delete users from database and create test user before each test
     beforeEach(async () => {
         await User.deleteMany({});
-        const user = new User({ username: 'rootuser', name: 'root-user', passwordHash: 'password' });
+        const user = new User({ username: 'rootuser', name: 'root-user', passwordHash: '$2y$10$bJXYrx9PRRlovyGPKKB7Hu3hDy7RIPoepjoz.CPBC0EoQ/Pt5k2Xy' });
         await user.save();
     });
 
@@ -19,7 +19,7 @@ describe('creating user', () => {
         const newUser = {
             username: 'eetuh',
             name: 'Eetu Häkkinen',
-            password: 'eetunpw'
+            password: 'eetunpassw'
         }
 
         await api

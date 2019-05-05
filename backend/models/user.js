@@ -16,7 +16,13 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true,
         minlength: 6
-    }
+    },
+    stocks: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Stock'
+        }
+    ]
 });
 
 userSchema.plugin(uniqueValidator);
