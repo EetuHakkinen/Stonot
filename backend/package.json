@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jest --verbose --runInBand"
+    "test": "jest --verbose --runInBand",
+    "wt": "jest --verbose --runInBand --watchAll",
+    "coverage": "jest --runInBand --coverage"
   },
   "repository": {
     "type": "git",

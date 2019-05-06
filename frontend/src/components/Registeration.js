@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 //**Page which handles user registeration */
 const Registeration = (props) => {
     // when register-button was clicked
-    onSubmit = async (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         const user = {
             username: e.target.username.value,
@@ -16,7 +16,7 @@ const Registeration = (props) => {
         var regUser = await registerUser(user);
         if (regUser.status === 200) {
             // if registeration was OK, redirect to login form
-            props.history.push('/login');
+            
         }
     }
 
@@ -36,4 +36,4 @@ const Registeration = (props) => {
     );
 }
 
-export default withRouter(Registeration);
+export default Registeration;
