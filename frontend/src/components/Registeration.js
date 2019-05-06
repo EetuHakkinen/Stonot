@@ -16,7 +16,7 @@ const Registeration = (props) => {
         var regUser = await registerUser(user);
         if (regUser.status === 200) {
             // if registeration was OK, redirect to login form
-            
+            window.location.replace('/login');
         }
     }
 

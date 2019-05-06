@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {
@@ -7,13 +7,15 @@ import {
 } from 'react-router-dom';
 import Home from './components/Home';
 import Registeration from './components/Registeration';
+import Login from './components/Login';
 
 function App() {
     return (
-        <div className="App">
+        <div>
             <Router>
                 <Route exact path="/" render={() => <Home />} />
                 <Route path="/registeration" render={() => <Registeration />} />
+                <Route path="/login" render={() => <Login />} />
             </Router>
         </div>
     );
