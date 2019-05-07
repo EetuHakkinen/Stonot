@@ -28,21 +28,28 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core';
+import LightTheme from './constants/lightTheme';
+import classNames from 'classnames';
 
 function App() {
     return (
         <div className="container">
             <Router>
-                <Bar />
-                <Route exact path="/" render={() => <Home />} />
-                <Route path="/registeration" render={() => <Registeration />} />
-                <Route path="/login" render={() => <Login />} />
+                <MuiThemeProvider theme={LightTheme}>
+                    <Bar />
+                    <Route exact path="/" render={() => <Home />} />
+                    <Route path="/registeration" render={() => <Registeration />} />
+                    <Route path="/login" render={() => <Login />} />
+                </MuiThemeProvider>
             </Router>
         </div>
     );
 }
 
-const styles = theme = ({
+const drawerWidth = 240;
+
+const styles = ({
     root: {
         flexGrow: 1,
     },
@@ -56,20 +63,20 @@ const styles = theme = ({
     root: {
         display: 'flex',
     },
-    appBar: {
+    /*appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
+            //easing: theme.transitions.easing.sharp,
+            duration: 1,
         }),
     },
     appBarShift: {
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
         transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
+            //easing: theme.transitions.easing.easeOut,
+            duration: 1,
         }),
-    },
+    },*/
     menuButton: {
         marginLeft: 12,
         marginRight: 20,
@@ -88,23 +95,23 @@ const styles = theme = ({
         display: 'flex',
         alignItems: 'center',
         padding: '0 8px',
-        ...theme.mixins.toolbar,
+        //...theme.mixins.toolbar,
         justifyContent: 'flex-end',
     },
     content: {
         flexGrow: 1,
-        padding: theme.spacing.unit * 3,
-        transition: theme.transitions.create('margin', {
+        padding: '5px',
+        /*transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
-        }),
+        }),*/
         marginLeft: -drawerWidth,
     },
     contentShift: {
-        transition: theme.transitions.create('margin', {
+        /*transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
-        }),
+        }),*/
         marginLeft: 0,
     },
 });
@@ -132,20 +139,24 @@ const Appbar = ({ classes }) => {
                 classes={{
                     paper: classes.drawerPaper
                 }}>
+                <div className={classes.drawerHeader}>
+                    <IconButton onClick={() => setOpen(false)}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </div>
                 <List>
                     <ListItem button>
                         <ListItemIcon></ListItemIcon>
                         <ListItemText primary="Text here" />
                     </ListItem>
-                </List>    
+                </List>
                 <Divider />
             </Drawer>
         </div>
     );
 }
 
-const Bar = withStyles(styles, { withTheme: true })(Appbar);
+const Bar = withStyles(styles, { withTheme: false })(Appbar);
 
-const drawerWidth = 240;
 
 export default App;
