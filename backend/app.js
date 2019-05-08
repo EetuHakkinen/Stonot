@@ -15,6 +15,7 @@ const config = require('./utils/config');
 const loginRouter = require('./controllers/login');
 const usersRouter = require('./controllers/users');
 const stockRouter = require('./controllers/stock');
+const pushRouter = require('./controllers/push');
 
 // connect backend to mongodb
 mongoose.connect(mongoUrl, { useNewUrlParser: true })
@@ -27,8 +28,10 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true })
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static('build'));
 app.use('/api/login/', loginRouter);
 app.use('/api/users/', usersRouter);
 app.use('/api/stock/', stockRouter);
+app.use('/api/push/', pushRouter);
 
 module.exports = app;

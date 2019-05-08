@@ -17,6 +17,12 @@ const userSchema = mongoose.Schema({
         required: true,
         minlength: 6
     },
+    endpoint: String,
+    keys: mongoose.Schema.Types.Mixed,
+    createDate: {
+        type: Date,
+        default: Date.now,
+    },
     stocks: [
         {
             type: mongoose.Schema.Types.ObjectId,
