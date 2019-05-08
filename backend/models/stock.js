@@ -17,7 +17,7 @@ stockSchema.plugin(uniqueValidator);
 /**Changes _id to id, removes _id and _v when user
  * info is shown.
  */
-userSchema.set('toJSON', {
+stockSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject._id

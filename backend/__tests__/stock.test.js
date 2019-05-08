@@ -6,24 +6,43 @@ const supertest = require('supertest');
 
 const api = supertest(app);
 
-describe('handle stocklist', async () => {
+describe('handle stocklist', () => {
     /**Before each test empty database and create test user */
     beforeEach(async () => {
         await Stock.deleteMany({});
         await User.deleteMany({});
-        await api.post('/api/users/').send({ username: 'eetuh', name: 'Eetu Häkkinen', password: 'hellurei123'});
+        await api.post('/api/users/').send({ username: 'eetuh', name: 'Eetu Häkkinen', password: 'hellurei123' });
+    });
+
+    test('set stocks', async () => {
+        // login
+        const currUser = await api.post('/api/login').send({ username: 'eetuh', password: 'hellurei123' });
+
+        // create new stock to server
+        const res = await api.post('/api/stock')
+            .set('authorization', 'bearer ' + currUser.body.token)
+            .send({ ticker: 'NOKIA', name: 'Nokia Oyj' })
+            .expect(200);
+        expect(res.body.ticker).toEqual('NOKIA');
+        expect(res.body.name).toEqual('Nokia Oyj');
     });
 
     test('get stocks', async () => {
-        const stock = await new Stock({ticker: 'NOKIA', name: 'Nokia Oyj'}).save();
-        const usr = await api.post('/api/login').send({ username: 'eetuh', password: 'hellurei123'});
-        const user = await User.find({username: 'eetuh'});
-        user.stocks.concat(stock._id);
-        await user.save();
-        const res = await api.get('/api/stock').set('authorization', 'bearer ' + usr.body.token).expect(200);
+        // login
+        const currUser = await api.post('/api/login').send({ username: 'eetuh', password: 'hellurei123' });
 
-        expect(res.body[0].name).toEquals('Nokia Oyj');
-        expect(res.body[0].ticker).toEquals('NOKIA');
+        // create new stock to server
+        await api.post('/api/stock')
+            .set('authorization', 'bearer ' + currUser.body.token)
+            .send({ ticker: 'NOKIA', name: 'Nokia Oyj' })
+            .expect(200);
+
+        // get stocklist from server
+        const res = await api.get('/api/stock')
+                        .set('authorization', 'bearer ' + currUser.body.token)
+                        .expect(200);
+        expect(res.body[0].ticker).toEqual('NOKIA');
+        expect(res.body[0].name).toEqual('Nokia Oyj');
     });
 });
 
