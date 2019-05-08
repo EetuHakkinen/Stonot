@@ -25,7 +25,7 @@ const Login = ({ user, setUser }) => {
         }
     }
 
-    if (user.token) {
+    if (user && user.token) {
         return <Redirect to="/" />
     }
 

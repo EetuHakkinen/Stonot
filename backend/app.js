@@ -29,6 +29,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/login/', loginRouter);
 app.use('/api/users/', usersRouter);
-app.use('/api/stock', stockRouter);
+app.use('/api/stock/', stockRouter);
 
 module.exports = app;

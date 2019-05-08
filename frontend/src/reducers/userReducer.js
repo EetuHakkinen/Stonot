@@ -2,7 +2,6 @@
 const userReducer = (state = {}, action) => {
     switch (action.type) {
         case 'SET':
-            console.log(action.data);
             return action.data;
         default:
             return state;

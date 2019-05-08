@@ -4,7 +4,8 @@ const uniqueValidator = require('mongoose-unique-validator');
 const stockSchema = mongoose.Schema({
     ticker: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     name: {
         type: String,

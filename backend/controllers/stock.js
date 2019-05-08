@@ -22,4 +22,16 @@ stockRouter.post('/', async (req, res, next) => {
     res.status(200).send(stock.toJSON());
 });
 
+stockRouter.delete('/:id', async (req, res, next) => {
+    var id = req.params.id;
+
+    // get user by token
+    const user = await getUser(req, res, next);
+    // remove stock from user stocks
+    const stocks = user.stocks.filter((s) => s.id !== id);
+    user.stocks = stocks;
+    await user.save();
+    res.status(201).send({ message: 'deleted successfully' });
+});
+
 module.exports = stockRouter;

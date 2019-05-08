@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001/api/'
+export const baseUrl = 'http://localhost:3001/api/'
 
 //** Send user registeration post request to backend */
 export async function registerUser(user) {

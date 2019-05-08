@@ -15,6 +15,7 @@ describe('handle stocklist', () => {
     });
 
     test('set stocks', async () => {
+        const stocksBeginning = await Stock.find({});
         // login
         const currUser = await api.post('/api/login').send({ username: 'eetuh', password: 'hellurei123' });
 
@@ -23,8 +24,13 @@ describe('handle stocklist', () => {
             .set('authorization', 'bearer ' + currUser.body.token)
             .send({ ticker: 'NOKIA', name: 'Nokia Oyj' })
             .expect(200);
+
+        const stocksEnd = await Stock.find({});
+        const stock = await Stock.find({ticker: 'NOKIA'});
         expect(res.body.ticker).toEqual('NOKIA');
         expect(res.body.name).toEqual('Nokia Oyj');
+        expect(stocksEnd.length).toEqual(stocksBeginning.length + 1);
+        expect(stock).not.toBe(undefined);
     });
 
     test('get stocks', async () => {
@@ -43,6 +49,24 @@ describe('handle stocklist', () => {
                         .expect(200);
         expect(res.body[0].ticker).toEqual('NOKIA');
         expect(res.body[0].name).toEqual('Nokia Oyj');
+    });
+
+    // TODO:TEST IF STOCK DATA DOESN'T HAVE NAME OR TICKER!
+
+    test('delete stocks', async () => {
+        // login
+        const currUser = await api.post('/api/login').send({ username: 'eetuh', password: 'hellurei123' });
+
+        // create new stock to server
+        const stock = await api.post('/api/stock')
+            .set('authorization', 'bearer ' + currUser.body.token)
+            .send({ ticker: 'NOKIA', name: 'Nokia Oyj' })
+            .expect(200);
+
+        const stocksBeginning = await Stock.find({});
+        const res = await api.delete('/api/stock/' + stock.body.id).set('authorization', 'bearer ' + currUser.body.token).expect(201);
+        const stocksEnd = await Stock.find({});
+        expect(stocksEnd.length).toEqual(stocksBeginning.length - 1);
     });
 });
 
