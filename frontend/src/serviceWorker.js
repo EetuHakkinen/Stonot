@@ -1,65 +1,59 @@
-var isSubscribed = false;
-var swRegisteration = null;
-var appKey = 'BPoO-AvPYIs5yUy98MqLmuPd7mNtcf9FL2i-xxUpQu-ZFQw9irJiW2RtvDeMAdajbDrQLXegsgDswtdv9hVWLbM';
+// Hard-coded, replace with your public key
+const publicVapidKey = 'BPX1GQyGMO9t0kYGqzlj1S6EcXIfLpuYC5HqnrcBGiGxHAgvAi46iOtHYqeg3Wy2tczoaFS_ZAaDhFNX5Y509vM';
 
-function urlB64ToUnit8Array(base64String) {
+if ('serviceWorker' in navigator) {
+    console.log('Registering service worker');
+
+    run().catch(error => console.error(error, 'code:', error.code, 'message:', error.message));
+}
+
+async function run() {
+    console.log('Registering service worker');
+    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(async (registration) => {
+            console.log(registration);
+            console.log('Registered service worker');
+
+            console.log('Registering push');
+            const subscription = await registration.pushManager.
+                subscribe({
+                    userVisibleOnly: true,
+                    // The `urlBase64ToUint8Array()` function is the same as in
+                    // https://www.npmjs.com/package/web-push#using-vapid-key-for-applicationserverkey
+                    applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+                });
+            console.log('Registered push');
+
+            console.log('Sending push');
+            await fetch('/api/push/subscribe', {
+                method: 'POST',
+                body: JSON.stringify(subscription),
+                headers: {
+                    'content-type': 'application/json'
+                }
+            });
+            console.log('Sent push');
+        }).catch(e => {
+            console.warn('ERROR')
+            console.error(e);
+            console.error(e.code);
+            console.error(e.message);
+            console.error(e.name);
+        });
+
+}
+
+function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
-            .replace(/\-/g, '+')
-            .replace(/_/g, '/');
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
 
     const rawData = window.atob(base64);
     const outputArray = new Uint8Array(rawData.length);
 
-    for (var i = 0; i < rawData.length; i++) {
+    for (let i = 0; i < rawData.length; ++i) {
         outputArray[i] = rawData.charCodeAt(i);
     }
     return outputArray;
-}
-
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-    navigator.serviceWorker.register('sw.js')
-        .then((swReg) => {
-            swRegisteration = swReg;
-            swRegisteration.pushManager.getSubscription()
-                .then((sub) => {
-                    isSubscribed = !(sub === null);
-
-                    if (isSubscribed) {
-                        console.log('subscribed!');
-                    } else {
-                        swRegisteration.pushManager.subscribe({
-                            userVisibleOnly: true,
-                            applicationServerKey: urlB64ToUnit8Array(appKey)
-                        })
-                        .then((subsc) => {
-                            saveSubscription(subsc);
-                            isSubscribed = true;
-                        })
-                        .catch((e) => {
-                            console.error(e);
-                        });
-                    }
-                });
-        })
-        .catch(e => {
-            console.error(e);
-        });
-} else {
-    console.warn('Push messaging is not supported');
-}
-
-function saveSubscription(sub) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", "/api/push/subscribe");
-    xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState != 4) return;
-        if (xmlHttp.status !== 200 && xmlHttp.status != 304) {
-            console.error('HTTP error ' + xmlHttp.status, null);
-        } else {
-            console.log('subscribed');
-        }
-    };
-    xmlHttp.send(JSON.stringify(sub));
 }

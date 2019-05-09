@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');
 require('dotenv').config();
 var mongoUrl = '';
 // select database based on node environment
@@ -24,7 +25,14 @@ mongoose.connect(mongoUrl, { useNewUrlParser: true })
     })
     .catch(e => {
         console.error(e);
-    })
+    });
+
+app.get("/service-worker.js", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "build", "service-worker.js"));
+});
+/*app.get("*", function response(req, res) {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
+});*/
 
 app.use(cors());
 app.use(bodyParser.json());

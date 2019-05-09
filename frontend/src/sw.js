@@ -1,28 +1,10 @@
-var notificationUrl = '';
+console.log('Loaded service worker!');
 
-self.addEventListener('push', e => {
-    var _data = e.data ? JSON.parse(e.data.text()) : {};
-    notificationUrl = _data.url;
-    e.waitUntil(
-        self.registration.showNotification(_data.title, {
-            body: _data.message,
-            icon: _data.icon,
-            tag: _data.tag
-        })
-    );
-})
-
-self.addEventListener('notificationclick', e => {
-    e.notification.close();
-
-    e.waitUntil(
-        clients.matchAll({
-            type: "window"
-        })
-        .then(clientList => {
-            if (clients.openWindow) {
-                return clients.openWindow(notificationUrl);
-            }
-        })
-    );
+self.addEventListener('push', ev => {
+    const data = ev.data.json();
+    console.log('Got push', data);
+    self.registration.showNotification(data.title, {
+        body: 'Hello, World!',
+        icon: 'http://mongoosejs.com/docs/images/mongoose5_62x30_transparent.png'
+    });
 });
