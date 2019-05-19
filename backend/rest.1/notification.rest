@@ -1,8 +1,0 @@
-POST https://localhost:3001/api/push/
-Content-Type: application/json
-
-{
-    "title": "Moi123",
-    "message": "notification works!",
-    "url": "https://localhost:3000/"
-}

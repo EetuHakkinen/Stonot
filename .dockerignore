@@ -2,6 +2,4 @@ ci/
 manifests/
 node_modules/
 
-Dockerfile
-Jenkinsfile
 npm-debug.log
