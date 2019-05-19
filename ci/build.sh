@@ -1,2 +1,2 @@
-docker build --tag ${image} ..
- 
+docker build --tag ${image} .
+  
